@@ -102,7 +102,6 @@ public struct DisplayStateStruct
         {
             return "Current Mode:\n" + State switch
             {
-                //DisplayState.Clickable => "Clickable",
                 DisplayState.NumberEnter => "Number Enter",
                 DisplayState.Time => "Current Time",
                 DisplayState.Incrementer => "Incrementer",
@@ -117,7 +116,6 @@ public struct DisplayStateStruct
     {
         DSS.State = DSS.State switch
         {
-            //DisplayState.Clickable => ,
             DisplayState.NumberEnter => DisplayState.Time,
             DisplayState.Time => DisplayState.Incrementer,
             DisplayState.Incrementer => DisplayState.NumberEnter,
@@ -129,7 +127,6 @@ public struct DisplayStateStruct
     {
         DSS.State = DSS.State switch
         {
-            //DisplayState.Clickable => ,
             DisplayState.NumberEnter => DisplayState.Incrementer,
             DisplayState.Time => DisplayState.NumberEnter,
             DisplayState.Incrementer => DisplayState.Time,
@@ -159,14 +156,26 @@ public struct TimeStruct
         SecSeg.ToList().Clear(); SecSeg = null;
     }
 
-    public void DisplayTime()
+    public void DisplayTime(int hour, int min, int sec)
     {
-        StartObject.GetNumber(Hour / 10, HourSeg[0]);
-        StartObject.GetNumber(Hour % 10, HourSeg[1]);
-        StartObject.GetNumber(Min / 10, MinSeg[0]);
-        StartObject.GetNumber(Min % 10, MinSeg[1]);
-        StartObject.GetNumber(Sec / 10, SecSeg[0]);
-        StartObject.GetNumber(Sec % 10, SecSeg[1]);
+        if (Hour != hour)
+        {
+            Hour = hour;
+            StartObject.GetNumber(Hour / 10, HourSeg[0]);
+            StartObject.GetNumber(Hour % 10, HourSeg[1]);
+        }
+        if (Min != min)
+        {
+            Min = min;
+            StartObject.GetNumber(Min / 10, MinSeg[0]);
+            StartObject.GetNumber(Min % 10, MinSeg[1]);
+        }
+        if (Sec % 10 != sec % 10)
+        {
+            Sec = sec;
+            StartObject.GetNumber(Sec / 10, SecSeg[0]);
+            StartObject.GetNumber(Sec % 10, SecSeg[1]);
+        }
     }
 
     public int Hour;
@@ -180,7 +189,6 @@ public struct TimeStruct
 
 public enum DisplayState
 {
-    //Clickable,
     NumberEnter,
     Time,
     Incrementer

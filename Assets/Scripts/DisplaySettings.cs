@@ -11,9 +11,6 @@ public class DisplaySettings : MonoBehaviour
     [Header("Number Enter")]
     [SerializeField] GameObject NumberEnterPanel;
 
-    [Header("Time")]
-    [SerializeField] GameObject TimePanel;
-
     [Header("Other/Settings")]
     [SerializeField] TextMeshProUGUI CurrentModeText;
     [SerializeField] DisplayState dispState;
@@ -40,12 +37,11 @@ public class DisplaySettings : MonoBehaviour
 
     void ChangeDisplayState()
     {
-        bool isClickable = false;
         switch (displayStateStr.State)
         {
-            case DisplayState.NumberEnter: NumberEnter(out isClickable);  break;
-            case DisplayState.Time: DisplayTime(out isClickable);                  break;
-            case DisplayState.Incrementer: Incrementer(out isClickable);     break;
+            case DisplayState.NumberEnter: NumberEnterPanel.SetActive(true);           break;
+            case DisplayState.Time:                NumberEnterPanel.SetActive(false);         break;
+            case DisplayState.Incrementer:    NumberEnterPanel.SetActive(false);         break;
         }
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Colon")) Destroy(obj);
@@ -53,27 +49,5 @@ public class DisplaySettings : MonoBehaviour
         if (CurrentModeText)
             CurrentModeText.text = displayStateStr.Text;
         StateChanged(displayStateStr.State);
-    }
-
-    void NumberEnter(out bool clickable)
-    {
-        NumberEnterPanel.SetActive(true);
-        TimePanel.SetActive(false);
-
-        clickable = false;
-    }
-    void DisplayTime(out bool clickable)
-    {
-        NumberEnterPanel.SetActive(false);
-        TimePanel.SetActive(true);
-
-        clickable = false;
-    }
-    void Incrementer(out bool clickable)
-    {
-        NumberEnterPanel.SetActive(false);
-        TimePanel.SetActive(false);
-
-        clickable = false;
     }
 }

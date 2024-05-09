@@ -19,6 +19,10 @@ public class StartObject : MonoBehaviour
     /// Creates the DisplaySegments object using a Func and returns the object created.
     /// </summary>
     public Func<DisplaySegments> MakeDisplay;
+    /// <summary>
+    /// Changes the Displayed Time.
+    /// </summary>
+    public Action<DateTime> DisplayTime;
 
     [SerializeField] DisplaySegments display;
     [SerializeField] GameObject colonObj;
@@ -71,6 +75,7 @@ public class StartObject : MonoBehaviour
             if (timeStruct.ColonObjs != null)
                 timeStruct.Clear();
         };
+        DisplayTime -= _ => timeStruct.DisplayTime(_.Hour, _.Minute, _.Second);
     }
 
     void Awake()
@@ -95,6 +100,7 @@ public class StartObject : MonoBehaviour
             if (timeStruct.ColonObjs != null)
                 timeStruct.Clear();
         };
+        DisplayTime += _ => timeStruct.DisplayTime(_.Hour, _.Minute, _.Second);
 
         displayContainer = Instantiate(new GameObject());
         displayContainer.name = "DisplayContainer";
@@ -132,7 +138,7 @@ public class StartObject : MonoBehaviour
             foreach (DisplaySegments dis in displays) GetNumber(CheckIfCharIsInt(number[i++]), dis);
         }
     }
-    private void OnIncrementerDown()
+    void OnIncrementerDown()
     {
         if (canIncrement)
         {
@@ -215,13 +221,6 @@ public class StartObject : MonoBehaviour
         }
     }
     
-    void DisplayTime(DateTime dateTime)
-    {
-        timeStruct.Hour = dateTime.Hour;
-        timeStruct.Min = dateTime.Minute;
-        timeStruct.Sec = dateTime.Second;
-        timeStruct.DisplayTime();
-    }
     void ChangeDisplayForTime()
     {
         if (displays != null)
